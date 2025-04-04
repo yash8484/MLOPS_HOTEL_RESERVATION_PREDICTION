@@ -1,14 +1,14 @@
-pipeline {
+pipeline{
     agent any
 
     stages {
-        stage('Cloning GitHub Repo to Jenkins') {
+        stage('cloning Github repo to Jenkins') {
             steps {
-                echo 'Cloning GitHub repo to Jenkins...'
-                git branch: 'main',
-                    url: 'https://github.com/yash8484/MLOPS_HOTEL_RESERVATION_PREDICTION.git',
-                    credentialsId: 'github-token'
+                script{
+                echo 'cloning Github repo to jenkins...'
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/yash8484/MLOPS_HOTEL_RESERVATION_PREDICTION.git']])
+                }
             }
-        }
+        }   
     }
 }
