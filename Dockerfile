@@ -1,34 +1,35 @@
 # Use a lightweight Python image
-FROM python:3.11-slim
+FROM python:slim
 
-# Prevent Python from writing .pyc files and ensure logs are shown in real-time
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    GOOGLE_APPLICATION_CREDENTIALS="c:\Users\Asus\Downloads\beaming-team-447617-k7-15028f5f7927.json"  # 👈 Set GCP credentials path if needed
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Optional: Set GCP credentials path inside the container
+# Make sure the file is copied into the container and path matches
+# ENV GOOGLE_APPLICATION_CREDENTIALS="/app/credentials/gcp-key.json"
 
 # Set the working directory
 WORKDIR /app
 
-# Install system dependencies required by LightGBM and others
+# Install system dependencies required by LightGBM
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the entire application
+# Copy the application code into the container
 COPY . .
 
-# Install dependencies
-RUN pip install --upgrade pip
+# Install the package in editable mode
 RUN pip install --no-cache-dir -e .
 
-# Optional: COPY credentials.json only if you're baking into the image (not recommended for production)
-# COPY credentials.json /app/credentials.json
-
-# Run training pipeline
+# Run the training pipeline
 RUN python pipeline/training_pipeline.py
 
-# Expose port used by Flask
+# Expose the port that Flask will run on
 EXPOSE 5000
 
-# Start the application
+# Start the Flask application
 CMD ["python", "application.py"]
+
