@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         VENV_DIR = 'venv'
-        GCP_PROJECT = "beaming-team-447617-k7"
+        GCP_PROJECT = "mlops-456213"
         GCLOUD_PATH = "/var/jenkins_home/google-cloud-sdk/bin"
     }
 
