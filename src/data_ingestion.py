@@ -23,7 +23,7 @@ class DataIngestion:
     def download_csv_from_gcp(self):
         try:
             # ✅ Use service account credentials
-            service_account_path = "C:/Users/Asus/Downloads/beaming-team-447617-k7-15028f5f7927.json"
+            service_account_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
             client = storage.Client.from_service_account_json(service_account_path)
 
             bucket = client.bucket(self.bucket_name)
