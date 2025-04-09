@@ -1,5 +1,0 @@
-artifacts
-config
-pipeline
-src
-utils
